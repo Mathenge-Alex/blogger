@@ -30,6 +30,11 @@ def create_app(config_name):
     login_manager.init_app(app)
     mail.init_app(app)
 
+# Add argument to initialize database values
+    # with app.app_context():
+    #     db.create_all()
+
+
     # Registering the blueprint
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

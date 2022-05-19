@@ -6,7 +6,7 @@ from ..models import User,Post,Comment,Like,Dislike,Subscriber
 from .forms import PostForm,UpdateProfile
 from ..request import get_random_quote
 from flask_login import login_required,current_user
-from ..email import mail_message
+# from ..email import mail_message
 
 
 
@@ -34,8 +34,8 @@ def create_post():
         post = Post(content=content, title=title, user_id=current_user.id)
         post.save_post()
         flash('Post created!', category='success')
-        for subscriber in subscribers:
-            mail_message('New Blog Post','email/new_post',subscriber.email,post=post)
+        # for subscriber in subscribers:
+        #     mail_message('New Blog Post','email/new_post',subscriber.email,post=post)
         return redirect(url_for('.index'))
 
     return render_template('create_post.html',post_form=form,user=current_user)

@@ -1,0 +1,17 @@
+#postCards{
+    border: 0.4rem none !important;
+    border-radius: 0.6rem;
+}
+.likes, .edits{
+    display: flex;
+    justify-content: space-between;
+}
+.page{
+    background-image: url(../images/random\ Quotes.jpg);
+}
+.page-blur{
+    background: rgba(0, 0, 0, 0.5); 
+    color: #f1f1f1; 
+    width: 100%;
+    padding: 20px;
+}

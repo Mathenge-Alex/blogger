@@ -6,36 +6,29 @@
 
 {% block content %}
 
-<div style="background-color: rgba(231, 237, 237, 0.631);">
-    <div class="container">
+<div class="page" style="background-image: url(../static/images/random\ Quotes.jpg);">
+    <div class="container page-blur" style="background: rgba(0, 0, 0, 0.5); 
+    color: #f1f1f1;">
         <h3 class="text-center"><strong><em>Random Quote</em></strong></h3>
-        <div class="jumbotron" style="background-color: rgb(255, 255, 255)">
-            <p>“{{quote.quote}}”</p>
-            <h2>Author: <em>{{quote.author}}</em></h2>
+        <div class="text-center">
+            <p style="font-size:x-large ;">“{{quote.quote}}”</p>
+            <h2>Quote by: <em>{{quote.author}}</em></h2>
         </div>
         <br>
         <hr>
         <br>
         
         <div class="row">
-            <div class="col-md-6 text-center m-auto">
-                <a href="/create-post"><button type="button" class="btn btn-success btn-lg">
-                        Post Your Blog
+            <div class="col-md-8">
+                <h2 class="mx-3 text-center"><u><b>Posted Blogs</b></u></h2>
+            </div>
+
+            <div class="col-md-3 text-right m-auto">
+                <a href="/create-post"><button type="button" class="btn btn-info btn-lg">
+                        Post A Blog
                     </button></a>
             </div>
-            <div class="col-md-6 border border-success rounded p-2">
-                <form id="subscribeForm" class="form-inline ml-2" action="{{url_for('main.subscribe')}}" method="POST">
-                <h3 class="text-center">Subscribe For New Posts alerts</h3>
-                <div class="text-center">
-                    <div class="md-form form-group">
-                    <input type="email" class="form-control" placeholder="Your email here..." name="subscriber" required>
-                    </div>
-                    <div class="md-form form-group">
-                    <button class="btn btn-success" id="subs">Subscribe</button>
-                    </div>
-                </div>
-                </form>
-            </div>
+            
         </div>
         <br>
         <hr>
@@ -43,32 +36,37 @@
         
         <div class="row">
             {% for post in posts %}
-            <div class="col-md-6">
+
+            <div class="col-md-4">
                 
-                <div class="card" style="border: 1px solid rgb(186, 248, 167); padding-left: 20px; padding-bottom: 15px; border-radius: 5px; background-color: rgb(255, 255, 255)">
+                <div class="card" style="border: 0.1rem solid; padding-left: 0.4rem; padding-bottom: 0.6rem; border-radius: 0.2rem; background-color: rgba(255, 255, 255, 0.8);">
                     
-                    <div class="card-header">
-                        <h2 style="color:rgb(128, 105, 55)">{{post.title}}</h2> 
+                    <div class="card-header text-center">
+                        <h2 style="color:rgb(128, 105, 55)"><u>{{post.title}}</u></h2> 
                     </div>
-                    <div class="card-body">
-                        <div class="card-text">{{post.content}}</div>
+                    <div class="card-body" style="margin: 1rem;">
+                        <div style="color: black;" class="card-text">{{post.content}}</div>
                         <div class="likes">
-                            <a class="btn text-success" href="{{url_for('.like_post',id=post.id)}}">Like
+                            <a class="btn text-success text-left" href="{{url_for('.like_post',id=post.id)}}">Like
                                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">{{post.like.count()}}</span>
                             </a>
                 
-                            <a class="btn text-danger" href="{{url_for('.dislike_post',id=post.id)}}">Dislike
+                            <a class="btn text-danger text-right" href="{{url_for('.dislike_post',id=post.id)}}">Dislike
                                 <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true">{{post.dislike.count()}}</span>
                             </a>
-                            <div class="text-muted">Posted on: {{post.time_created.strftime('%d-%m-%Y')}}</div>
+                            <div class="text-muted Text-end">Posted on: {{post.time_created.strftime('%d-%m-%Y')}}
+
+                            </div>
                             {% if current_user.id == post.user_id %}
-                            <a class="btn btn-info btn-sm mx-2" href="{{url_for('.update_post',post_id = post.id)}}">Edit Post</a>
+                            <div class="edits">
+                                <a class="btn btn-info btn-sm mx-2" href="{{url_for('.update_post',post_id = post.id)}}">Edit Post</a>
                             <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete Post</a>
+                            </div>
                             {% endif %}
                             <br />
-                            <h4>Comments</h4>
+                            <h4 style="color: black;">Comments</h4>
                             {% for comment in post.comment %}
-                            <p class="mt-10">
+                            <p class="mt-10" style="color: black;">
                                 <span style="font-weight: bold">{{comment.user.username}}:
                                 </span>
                                 {{comment.comment}}
@@ -83,7 +81,7 @@
                     <div class="card-footer">
                         <form action="{{url_for('.create_comment',post_id=post.id)}}" class="input-group mb-2" method="POST">
                             <input type="text" id="comment" name="comment" placeholder="Write a comment" />
-                            <button class="btn btn-sm mx-3 btn-warning" type="submit" style="margin-left:5px">Comment</button>
+                            <button style="color: black;" class="btn btn-sm mx-3 btn-primary" type="submit" style="margin-left:5px">Comment</button>
                         </form>    
                     </div>
                 </div>
@@ -92,6 +90,23 @@
             </div>
             {% endfor %}
         </div>
+        <!-- End of Posts -->
+
+        <!-- Subscription -->
+        <div class="col-md-10 border border-success rounded p-2">
+            <form id="subscribeForm" class="form-inline ml-2" action="{{url_for('main.subscribe')}}" method="POST">
+            <h3 class="text-center">Subscribe To Receive Alert on New Posts</h3>
+            <div class="text-center">
+                <div class="md-form form-group">
+                <input type="email" class="form-control" placeholder="Your email here..." name="subscriber" required>
+                </div>
+                <div class="md-form form-group">
+                <button class="btn btn-info" id="subs">Subscribe</button>
+                </div>
+            </div>
+            </form>
+        </div>
+
     </div>
 </div>
 
