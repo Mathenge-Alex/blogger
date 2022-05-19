@@ -1,0 +1,10 @@
+Hi there!
+
+See new post...
+
+Posted By: {{post.user.username}}
+Post: {{post.content|truncate(50)}}
+
+
+Regards,
+Gidzblog

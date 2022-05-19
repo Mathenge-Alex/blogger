@@ -1,0 +1,3 @@
+Hello {{user.username}}
+Welcome to Gidzblog
+We have just seen you have signed up for our application and want to welcome you to the family. Please enjoy reading posts and post as well.
