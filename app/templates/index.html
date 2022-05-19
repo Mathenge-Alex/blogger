@@ -1,0 +1,100 @@
+{% extends 'base.html' %} 
+{%block styles%}
+{{ super() }}
+<link rel="stylesheet" href="../static/css/index.css">
+{%endblock%}
+
+{% block content %}
+
+<div style="background-color: rgba(231, 237, 237, 0.631);">
+    <div class="container">
+        <h3 class="text-center"><strong><em>Random Quote</em></strong></h3>
+        <div class="jumbotron" style="background-color: rgb(255, 255, 255)">
+            <p>“{{quote.quote}}”</p>
+            <h2>Author: <em>{{quote.author}}</em></h2>
+        </div>
+        <br>
+        <hr>
+        <br>
+        
+        <div class="row">
+            <div class="col-md-6 text-center m-auto">
+                <a href="/create-post"><button type="button" class="btn btn-success btn-lg">
+                        Post Your Blog
+                    </button></a>
+            </div>
+            <div class="col-md-6 border border-success rounded p-2">
+                <form id="subscribeForm" class="form-inline ml-2" action="{{url_for('main.subscribe')}}" method="POST">
+                <h3 class="text-center">Subscribe For New Posts alerts</h3>
+                <div class="text-center">
+                    <div class="md-form form-group">
+                    <input type="email" class="form-control" placeholder="Your email here..." name="subscriber" required>
+                    </div>
+                    <div class="md-form form-group">
+                    <button class="btn btn-success" id="subs">Subscribe</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+        
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-6">
+                
+                <div class="card" style="border: 1px solid rgb(186, 248, 167); padding-left: 20px; padding-bottom: 15px; border-radius: 5px; background-color: rgb(255, 255, 255)">
+                    
+                    <div class="card-header">
+                        <h2 style="color:rgb(128, 105, 55)">{{post.title}}</h2> 
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">{{post.content}}</div>
+                        <div class="likes">
+                            <a class="btn text-success" href="{{url_for('.like_post',id=post.id)}}">Like
+                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">{{post.like.count()}}</span>
+                            </a>
+                
+                            <a class="btn text-danger" href="{{url_for('.dislike_post',id=post.id)}}">Dislike
+                                <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true">{{post.dislike.count()}}</span>
+                            </a>
+                            <div class="text-muted">Posted on: {{post.time_created.strftime('%d-%m-%Y')}}</div>
+                            {% if current_user.id == post.user_id %}
+                            <a class="btn btn-info btn-sm mx-2" href="{{url_for('.update_post',post_id = post.id)}}">Edit Post</a>
+                            <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete Post</a>
+                            {% endif %}
+                            <br />
+                            <h4>Comments</h4>
+                            {% for comment in post.comment %}
+                            <p class="mt-10">
+                                <span style="font-weight: bold">{{comment.user.username}}:
+                                </span>
+                                {{comment.comment}}
+                            </p>
+                            <small class="text-muted"> {{comment.time_created.strftime('%d-%m-%Y')}}</small>
+                            {% if current_user.id == comment.user_id or current_user.id == post.user_id %}
+                            <a href="/delete-comment/{{comment.id}}" class="dropdown-item">Delete</a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form action="{{url_for('.create_comment',post_id=post.id)}}" class="input-group mb-2" method="POST">
+                            <input type="text" id="comment" name="comment" placeholder="Write a comment" />
+                            <button class="btn btn-sm mx-3 btn-warning" type="submit" style="margin-left:5px">Comment</button>
+                        </form>    
+                    </div>
+                </div>
+                <br>
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}
